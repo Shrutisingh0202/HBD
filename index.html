@@ -9,6 +9,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Define custom fonts and NEW custom cursor */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fff0f5; /* A light pink fallback color */
+            cursor: none; /* Hide the default cursor */
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        /* NEW: Ensure all interactive elements also hide the cursor */
+        button, a, input {
+            cursor: none;
+        }
+
         /* Define custom fonts */
         body {
             font-family: 'Poppins', sans-serif;
@@ -118,14 +131,14 @@
         <div id="main-menu" style="display: none;">
             <header class="text-center py-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl">
                 <h2 class="font-pacifico text-4xl md:text-6xl text-red-600">Your Surprises</h2>
-                <p class="text-gray-600 mt-2">Choose what you want to see first!</p>
+                <p class="text-gray-600 mt-4">Choose what you want to see first!</p>
             </header>
             <nav class="grid grid-cols-2 md:grid-cols-4 gap-4 my-8">
                 <!-- Giggles, change the passwords and hints here! -->
-                <button onclick="promptForPassword('reason-1', '170806', 'Hint: YOUR BIRTHDAY (DDMMYY)?')" class="bg-white p-4 rounded-xl shadow-md hover:shadow-xl transition-shadow text-red-600 font-semibold">💖 3 Reasons</button>
-                <button onclick="promptForPassword('letters-menu', 'love', 'Hint: I ____ YOU!')" class="bg-white p-4 rounded-xl shadow-md hover:shadow-xl transition-shadow text-red-600 font-semibold">💌 Letters For You</button>
-                <button onclick="promptForPassword('coupons-menu', 'one', 'Hint: How many girlfriends do you have?')" class="bg-white p-4 rounded-xl shadow-md hover:shadow-xl transition-shadow text-red-600 font-semibold">🎟️ Coupon Book</button>
-                <button onclick="promptForPassword('edits-menu', '020206', 'Hint: MY BIRTHDAY (DDMMYY)')" class="bg-white p-4 rounded-xl shadow-md hover:shadow-xl transition-shadow text-red-600 font-semibold">🎬 Our Edits</button>
+                <button onclick="promptForPassword('reason-1', '170806', 'Hint: YOUR BIRTHDAY (DDMMYY)?')" class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow text-red-600 font-semibold text-lg">💖 3 Reasons</button>
+                <button onclick="promptForPassword('letters-menu', 'love', 'Hint: I ____ YOU!')" class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow text-red-600 font-semibold text-lg">💌 Letters For You</button>
+                <button onclick="promptForPassword('coupons-menu', 'one', 'Hint: How many girlfriends do you have?')" class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow text-red-600 font-semibold text-lg">🎟️ Coupon Book</button>
+                <button onclick="promptForPassword('edits-menu', '020206', 'Hint: MY BIRTHDAY (DDMMYY)')" class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-shadow text-red-600 font-semibold text-lg">🎬 Our Edits</button>
             </nav>
         </div>
 
@@ -383,7 +396,7 @@
                     <a href="https://drive.google.com/file/d/1uq4n-QjuwhUkWIfcKATYP28SRC7OgWr4/view?usp=drive_link" target="_blank" class="block w-full text-left bg-red-50 p-4 rounded-lg font-bold text-lg text-red-700 hover:bg-red-100 transition">
                         HAPPY BIRTHDAY LOVE!
                     </a>
-                    <a href="YOUR_GOOGLE_DRIVE_LINK_HERE_2" target="_blank" class="block w-full text-left bg-red-50 p-4 rounded-lg font-bold text-lg text-red-700 hover:bg-red-100 transition">
+                    <a href="https://drive.google.com/file/d/1UCkAYYk5L-CVYDTCryEIq9G2615Rs869/view?usp=drive_link" target="_blank" class="block w-full text-left bg-red-50 p-4 rounded-lg font-bold text-lg text-red-700 hover:bg-red-100 transition">
                         Pt. 2
                     </a>
                     <a href="YOUR_GOOGLE_DRIVE_LINK_HERE_3" target="_blank" class="block w-full text-left bg-red-50 p-4 rounded-lg font-bold text-lg text-red-700 hover:bg-red-100 transition">
@@ -502,4 +515,5 @@
 
     </script>
 </body>
+
 </html>
