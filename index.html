@@ -16,6 +16,19 @@
             cursor: none; /* Hide the default cursor */
             overflow-x: hidden; /* Prevent horizontal scroll */
         }
+        
+        /* NEW: Styles for the shiny custom cursor */
+      #custom-cursor {
+          position: fixed;
+          width: 25px;
+          height: 25px;
+          background-color: #8B0000;
+          border-radius: 50%;
+          pointer-events: none;
+          z-index: 9999;
+          transform: translate(-50%, -50%);
+          box-shadow: 0 0 15px 5px rgba(255, 80, 80, 0.7);
+      }
 
         /* NEW: Ensure all interactive elements also hide the cursor */
         button, a, input {
@@ -85,8 +98,11 @@
             animation: pop-in-out 3s ease-in-out forwards; /* Changed duration to 3s */
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 </head>
 <body class="text-gray-800">
+    <canvas id="confetti-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000;"></canvas>
+    <div id="custom-cursor"></div>
 
     <!-- Password Modal -->
     <div id="password-modal" class="modal-overlay justify-center items-center">
@@ -408,6 +424,12 @@
     </div>
 
     <script>
+        // --- JavaScript for Custom Cursor ---
+      const customCursor = document.getElementById('custom-cursor');
+      document.addEventListener('mousemove', function(e) {
+          customCursor.style.left = e.clientX + 'px';
+          customCursor.style.top = e.clientY + 'px';
+      });
         // --- JavaScript for interactivity ---
         const welcomeScreen = document.getElementById('welcome-screen');
         const mainMenu = document.getElementById('main-menu');
@@ -432,9 +454,22 @@
         }
 
         function showMainMenu() {
-            hideAll();
-            mainMenu.style.display = 'block';
-        }
+          // --- THIS IS THE NEW CONFETTI CODE ---
+          const myCanvas = document.getElementById('confetti-canvas');
+          const myConfetti = confetti.create(myCanvas, {
+              resize: true,
+              useWorker: true
+          });
+          myConfetti({
+              particleCount: 150, // You can change this number
+              spread: 100,      // And this one for more or less spread
+              origin: { y: 0.6 }
+          });
+          // --- END OF NEW CODE ---
+
+          hideAll();
+          mainMenu.style.display = 'block';
+      }
 
         function showSection(sectionId) {
             hideAll();
@@ -517,3 +552,4 @@
 </body>
 
 </html>
+
