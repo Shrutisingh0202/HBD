@@ -8,7 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <!-- EDITED: Swapped confetti library for a real fireworks library -->
+    <script src="https://cdn.jsdelivr.net/npm/fireworks-js@2.10.7/dist/index.umd.js"></script>
     <style>
         /* --- Main Body and Background Style --- */
         body {
@@ -27,12 +28,12 @@
             position: fixed;
             width: 25px;
             height: 25px;
-            background-color: #8B0000; /* Dark Red */
+            background: radial-gradient(circle, rgba(255, 100, 100, 0.8) 0%, rgba(139, 0, 0, 0) 65%);
             border-radius: 50%;
             pointer-events: none; /* Allows clicking through the cursor */
             z-index: 9999; /* Keeps it on top of all other content */
             transform: translate(-50%, -50%); /* Centers the ball on the actual pointer */
-            box-shadow: 0 0 15px 5px rgba(255, 80, 80, 0.7); /* The red glow effect */
+            box-shadow: 0 0 15px 7px rgba(255, 80, 80, 0.5); /* The red glow effect */
         }
 
         /* --- Hides default cursor on interactive elements too --- */
@@ -93,8 +94,8 @@
 </head>
 <body class="text-gray-800">
 
-    <!-- Canvas for the confetti to be drawn on -->
-    <canvas id="confetti-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000;"></canvas>
+    <!-- EDITED: This div is now the container for the new fireworks effect -->
+    <div id="fireworks-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000;"></div>
     
     <!-- The HTML element for our custom cursor -->
     <div id="custom-cursor"></div>
@@ -130,7 +131,6 @@
             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-2xl">
                 <h1 class="font-pacifico text-5xl md:text-8xl text-red-600 drop-shadow-lg">Happy Birthday Baby!</h1>
                 <p class="mt-8 text-lg md:text-2xl text-gray-600">I made a little something for you...</p>
-                <!-- This button now has an ID to trigger the confetti reliably -->
                 <button id="surprise-button" class="mt-8 bg-red-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-red-700 transition-transform transform hover:scale-105">
                     Surprise!
                 </button>
@@ -139,7 +139,8 @@
 
         <!-- Main Content Menu (hidden initially) -->
         <div id="main-menu" style="display: none;">
-            <header class="text-center py-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl">
+            <header class="text-center py-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-2xl relative">
+                <button onclick="showWelcomeScreen()" class="absolute top-4 left-4 bg-red-800 text-white font-bold py-2 px-4 rounded-full hover:bg-red-900 transition">&larr; HBD</button>
                 <h2 class="font-pacifico text-4xl md:text-6xl text-red-600">Your Surprises</h2>
                 <p class="text-gray-600 mt-4">Choose what you want to see first!</p>
             </header>
@@ -153,9 +154,8 @@
 
         <!-- Container for the dynamic content sections -->
         <main id="sections-container">
-            <!-- "3 Reasons" Step-by-Step Reveal -->
             <section id="reason-1" class="reason-page bg-white/90 backdrop-blur-sm p-6 md:p-8 rounded-2xl shadow-lg text-center">
-                <button onclick="showMainMenu()" class="mb-8 bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full hover:bg-gray-300 transition">&larr; Back to Surprises</button>
+                <button onclick="showMainMenu()" class="mb-8 bg-red-800 text-white font-bold py-2 px-4 rounded-full hover:bg-red-900 transition">&larr; Back to Surprises</button>
                 <h3 class="font-pacifico text-3xl text-red-600 mb-6">Reason #1</h3>
                 <p class="text-2xl mb-8">I love how you don't just call me your princess, but you actually treat me like one.</p>
                 <button onclick="showSection('reason-2')" class="bg-red-600 text-white font-bold py-2 px-6 rounded-full shadow-lg hover:bg-red-700 transition">Next Reason &rarr;</button>
@@ -171,7 +171,7 @@
                 <button onclick="showSection('reasons-full-list')" class="bg-red-600 text-white font-bold py-2 px-6 rounded-full shadow-lg hover:bg-red-700 transition">See the real list...</button>
             </section>
             <section id="reasons-full-list" class="reason-page bg-white/90 backdrop-blur-sm p-6 md:p-8 rounded-2xl shadow-lg">
-                <button onclick="showMainMenu()" class="mb-8 bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full hover:bg-gray-300 transition">&larr; Back to Surprises</button>
+                <button onclick="showMainMenu()" class="mb-8 bg-red-800 text-white font-bold py-2 px-4 rounded-full hover:bg-red-900 transition">&larr; Back to Surprises</button>
                 <div class="space-y-6">
                     <div>
                         <h4 class="font-pacifico text-2xl text-red-500 mb-2">The Little Things...</h4>
@@ -200,7 +200,7 @@
                      <div>
                         <h4 class="font-pacifico text-2xl text-red-500 mb-2">Just Because...</h4>
                         <ol class="list-decimal list-inside space-y-1 text-left" start="56">
-                            <li>Your smile.</li><li>The sound of your laugh.</li><li>Your eyes.</li><li>Your hands.</li><li>The way you look when you've just woken up.</li><li>Your hugs from behind.</li><li>Your hugs from the front.</li><li>The way you look at me when you think I'm not looking.</li><li>Your taste in movies.</li><li>How you're always up for an adventure.</li><li>The way you smell.</li><li>How you make me feel like the most important person in the world.</li><li>Your little quirks that no one else sees.</li><li>How you can be serious one moment and a complete goofball the next.</li><li>Your sleepy and deep voice in the morning.</li><li>How you're my best friend.</li><li>The way you can always find the silver lining.</li><li>Your quick wit.</li><li>How you're always challenging me to think differently.</li><li>Your endless curiosity about the world.</li><li>The way you solve problems.</li><li>Your incredible memory (maybe).</li><li>Your perspective on life.</li><li>How you're never afraid to be wrong and learn.</li>
+                            <li>Your smile.</li><li>The sound of your laugh.</li><li>Your eyes.</li><li>Your hands.</li><li>The way you look when you've just woken up.</li><li>Your hugs from behind.</li><li>Your hugs from front.</li><li>The way you look at me when you think I'm not looking.</li><li>I hope you know how much I love being your gal.</li><li>How you're always up for an adventure.</li><li>The way you smell.</li><li>How you make me feel like the most important person in the world.</li><li>Your little quirks that no one else sees.</li><li>How you can be serious one moment and a complete goofball the next(us).</li><li>Your sleepy and deep voice in the morning.</li><li>How you're my best friend.</li><li>The way you can always find the silver lining.</li><li>How you bought the shirt for your birthday but going to wear it a day before just because you are going toh celebrate with me that day (THANKYOUUCUTUU!!)</li><li>How you're always challenging me to think differently.</li><li>Your endless curiosity about the ME.</li><li>The way you solve problems.</li><li>Your incredible memory (maybe).</li><li>Your perspective on life.</li><li>How you're never afraid to be wrong and learn.</li>
                         </ol>
                     </div>
                     <div>
@@ -212,7 +212,7 @@
                  </div>
             </section>
             <section id="letters-menu" class="content-section bg-white/90 backdrop-blur-sm p-6 md:p-8 rounded-2xl shadow-lg">
-                <button onclick="showMainMenu()" class="mb-8 bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full hover:bg-gray-300 transition">&larr; Back to Surprises</button>
+                <button onclick="showMainMenu()" class="mb-8 bg-red-800 text-white font-bold py-2 px-4 rounded-full hover:bg-red-900 transition">&larr; Back to Surprises</button>
                 <h3 class="font-pacifico text-3xl text-red-600 mb-6 text-center">Letters For You</h3>
                 <div class="space-y-4">
                     <button onclick="showLetter('letter-birthday')" class="w-full text-left bg-red-50 p-4 rounded-lg font-bold text-lg text-red-700 hover:bg-red-100 transition">Happy Birthday AJ</button>
@@ -221,22 +221,22 @@
                 </div>
             </section>
             <section id="letter-birthday" class="letter-page bg-white/90 backdrop-blur-sm p-6 md:p-8 rounded-2xl shadow-lg">
-                <button onclick="showSection('letters-menu')" class="mb-8 bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full hover:bg-gray-300 transition">&larr; Back to Letters</button>
+                <button onclick="showSection('letters-menu')" class="mb-8 bg-red-800 text-white font-bold py-2 px-4 rounded-full hover:bg-red-900 transition">&larr; Back to Letters</button>
                 <h3 class="font-pacifico text-3xl text-red-600 mb-6 text-center">Happy Birthday AJ</h3>
                 <p class="text-gray-700 leading-relaxed">To my amazing boyfriend,<br><br>Happy birthday! I've been trying to think of the perfect words to tell you how much you mean to me, and I keep coming back to the little things.<br><br>Like the fact that you physically cannot say no to me (don't worry, I promise to only use this power for good... mostly). Or how you're always ready to do any silly trend, especially the ones that require you to pick me up—it makes me feel like the main character every single time.<br><br>But it's not just the funny things. It's the deep-down, good-hearted things, too. It's the way I see you being so genuinely kind to people when you think no one's watching. It's how you don't just call me your princess, you actually treat me like one, every single day. And it's the way you hug me—that perfect, all-encompassing hug that makes the whole world disappear.<br><br>I absolutely love everything about you... well, *almost* everything. We can talk about your [insert a funny, harmless flaw here] later.<br><br>For today, just know that you are my favorite person, and I'm the luckiest girl in the world to be celebrating with you.<br><br>All my love, always,<br>Shruti</p>
             </section>
             <section id="letter-bad-day" class="letter-page bg-white/90 backdrop-blur-sm p-6 md:p-8 rounded-2xl shadow-lg">
-                <button onclick="showSection('letters-menu')" class="mb-8 bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full hover:bg-gray-300 transition">&larr; Back to Letters</button>
+                <button onclick="showSection('letters-menu')" class="mb-8 bg-red-800 text-white font-bold py-2 px-4 rounded-full hover:bg-red-900 transition">&larr; Back to Letters</button>
                 <h3 class="font-pacifico text-3xl text-red-600 mb-6 text-center">A Letter For When You've Had a Bad Day</h3>
                 <p class="text-gray-700 leading-relaxed">My love,<br><br>Okay, first things first: take a deep breath. Whatever happened today, I promise it's not as big as the universe and definitely not as important as you are to me.<br><br>I know on days like this your brain can go into overdrive, so let me just remind you of the official, undisputed facts: You are <strong>smart</strong> (even when you feel like you're not), you are <strong>funny</strong> (even when you don't feel like smiling), and you are ridiculously <strong>cute</strong> (that one's non-negotiable, sorry). It's a dangerous combination, really.<br><br>I know your go-to comfort is talking to me, and my line is always, always open for you. We can dissect the entire day, or we can talk about complete nonsense until you forget what was bothering you in the first place. Your call.<br><br>And if you need a smile, just think about that time in the movie theatre. Remember when I held your hand and you blushed so hard I could practically feel the heat coming off you in the dark? Thinking about that still makes my heart do a little flip.<br><br>This day does not define you. You're my favorite person, and you've got this.<br><br>Always here for you,<br>Shruti</p>
             </section>
             <section id="letter-laugh" class="letter-page bg-white/90 backdrop-blur-sm p-6 md:p-8 rounded-2xl shadow-lg">
-                <button onclick="showSection('letters-menu')" class="mb-8 bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full hover:bg-gray-300 transition">&larr; Back to Letters</button>
+                <button onclick="showSection('letters-menu')" class="mb-8 bg-red-800 text-white font-bold py-2 px-4 rounded-full hover:bg-red-900 transition">&larr; Back to Letters</button>
                 <h3 class="font-pacifico text-3xl text-red-600 mb-6 text-center">A Letter For When You Need a Laugh</h3>
                 <p class="text-gray-700 leading-relaxed">Hey you,<br><br>Is the world being a bit too serious today? Let's fix that.<br><br>I was just thinking about that time we were in the metro, and that person threw their bag in right as the doors were closing. I swear, for a solid second, we both thought, 'well, last day ig!' The way we went from pure panic to laughing so hard we couldn't breathe is one of my favorite memories. We have so many moments like that, where we just laugh endlessly.<br><br>And it's not always the grand, dramatic stuff. Sometimes it's as simple as me tickling your bum and hearing you laugh that completely makes my day.<br><br>Thank you for being the person I share all my laughter with. There's no better sound than yours.<br><br>Love you,<br>Shruti</p>
             </section>
             <section id="coupons-menu" class="content-section bg-white/90 backdrop-blur-sm p-6 md:p-8 rounded-2xl shadow-lg">
-                <button onclick="showMainMenu()" class="mb-8 bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full hover:bg-gray-300 transition">&larr; Back to Surprises</button>
+                <button onclick="showMainMenu()" class="mb-8 bg-red-800 text-white font-bold py-2 px-4 rounded-full hover:bg-red-900 transition">&larr; Back to Surprises</button>
                 <h3 class="font-pacifico text-3xl text-red-600 mb-6 text-center">Your Coupon Book</h3>
                 <p class="text-center mb-6 text-gray-600">Click a card to reveal your coupon!</p>
                 <div class="grid grid-cols-2 gap-6">
@@ -259,7 +259,7 @@
                 </div>
             </section>
             <section id="coupon-kiss" class="coupon-page bg-white/90 backdrop-blur-sm p-6 md:p-8 rounded-2xl shadow-lg">
-                <button onclick="showSection('coupons-menu')" class="mb-8 bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full hover:bg-gray-300 transition">&larr; Back to Cards</button>
+                <button onclick="showSection('coupons-menu')" class="mb-8 bg-red-800 text-white font-bold py-2 px-4 rounded-full hover:bg-red-900 transition">&larr; Back to Cards</button>
                 <div class="bg-red-50 border-2 border-dashed border-red-300 rounded-lg p-8 flex flex-col items-center text-center">
                     <h4 class="font-pacifico text-3xl text-red-700">Spontaneous Kiss</h4>
                     <p class="text-gray-600 my-4 text-lg">Redeem this coupon at any random moment for one big, spontaneous kiss.</p>
@@ -267,7 +267,7 @@
                 </div>
             </section>
             <section id="coupon-win" class="coupon-page bg-white/90 backdrop-blur-sm p-6 md:p-8 rounded-2xl shadow-lg">
-                <button onclick="showSection('coupons-menu')" class="mb-8 bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full hover:bg-gray-300 transition">&larr; Back to Cards</button>
+                <button onclick="showSection('coupons-menu')" class="mb-8 bg-red-800 text-white font-bold py-2 px-4 rounded-full hover:bg-red-900 transition">&larr; Back to Cards</button>
                 <div class="bg-red-50 border-2 border-dashed border-red-300 rounded-lg p-8 flex flex-col items-center text-center">
                     <h4 class="font-pacifico text-3xl text-red-700">"You Win" Pass</h4>
                     <p class="text-gray-600 my-4 text-lg">This coupon can be used to instantly win any one (1) argument. Use it wisely!</p>
@@ -275,7 +275,7 @@
                 </div>
             </section>
             <section id="coupon-getoutoftrouble" class="coupon-page bg-white/90 backdrop-blur-sm p-6 md:p-8 rounded-2xl shadow-lg">
-                <button onclick="showSection('coupons-menu')" class="mb-8 bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full hover:bg-gray-300 transition">&larr; Back to Cards</button>
+                <button onclick="showSection('coupons-menu')" class="mb-8 bg-red-800 text-white font-bold py-2 px-4 rounded-full hover:bg-red-900 transition">&larr; Back to Cards</button>
                 <div class="bg-red-50 border-2 border-dashed border-red-300 rounded-lg p-8 flex flex-col items-center text-center">
                     <h4 class="font-pacifico text-3xl text-red-700">Get Out Of Trouble Free</h4>
                     <p class="text-gray-600 my-4 text-lg">This card is a one-time pass to get out of trouble for a minor offense. (Note: Does not apply to major crimes against homosapiens or forgetting important dates).</p>
@@ -283,7 +283,7 @@
                 </div>
             </section>
             <section id="coupon-yesday" class="coupon-page bg-white/90 backdrop-blur-sm p-6 md:p-8 rounded-2xl shadow-lg">
-                <button onclick="showSection('coupons-menu')" class="mb-8 bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full hover:bg-gray-300 transition">&larr; Back to Cards</button>
+                <button onclick="showSection('coupons-menu')" class="mb-8 bg-red-800 text-white font-bold py-2 px-4 rounded-full hover:bg-red-900 transition">&larr; Back to Cards</button>
                 <div class="bg-red-50 border-2 border-dashed border-red-300 rounded-lg p-8 flex flex-col items-center text-center">
                     <h4 class="font-pacifico text-3xl text-red-700">The "Yes Day" Card</h4>
                     <p class="text-gray-600 my-4 text-lg">Redeem this and I have to say 'YES' to the next three things you ask for. (Please be nice!)</p>
@@ -291,7 +291,7 @@
                 </div>
             </section>
             <section id="edits-menu" class="content-section bg-white/90 backdrop-blur-sm p-6 md:p-8 rounded-2xl shadow-lg">
-                <button onclick="showMainMenu()" class="mb-8 bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-full hover:bg-gray-300 transition">&larr; Back to Surprises</button>
+                <button onclick="showMainMenu()" class="mb-8 bg-red-800 text-white font-bold py-2 px-4 rounded-full hover:bg-red-900 transition">&larr; Back to Surprises</button>
                 <h3 class="font-pacifico text-3xl text-red-600 mb-6 text-center">Our Edits</h3>
                 <p class="text-center mb-4">Click on an edit you wanna watch first!</p>
                 <div class="space-y-4">
@@ -303,6 +303,9 @@
                     </a>
                     <a href="YOUR_GOOGLE_DRIVE_LINK_HERE_3" target="_blank" class="block w-full text-left bg-red-50 p-4 rounded-lg font-bold text-lg text-red-700 hover:bg-red-100 transition">
                         Pt. 3
+                    </a>
+                    <a href="YOUR_GOOGLE_DRIVE_LINK_HERE_4" target="_blank" class="block w-full text-left bg-red-50 p-4 rounded-lg font-bold text-lg text-red-700 hover:bg-red-100 transition">
+                        Pt. 4
                     </a>
                 </div>
             </section>
@@ -340,6 +343,11 @@
             });
         }
         
+        function showWelcomeScreen() {
+            hideAll();
+            welcomeScreen.style.display = 'flex';
+        }
+
         function showMainMenu() {
             hideAll();
             mainMenu.style.display = 'block';
@@ -400,20 +408,55 @@
         submitBtn.addEventListener('click', checkPassword);
         passwordInput.addEventListener('keyup', e => { if (e.key === "Enter") checkPassword(); });
 
-        // --- NEW & IMPROVED CONFETTI TRIGGER ---
+        // --- NEW FIREWORKS SCRIPT ---
         const surpriseButton = document.getElementById('surprise-button');
-        const confettiCanvas = document.getElementById('confetti-canvas');
-        const myConfetti = confetti.create(confettiCanvas, { resize: true, useWorker: true });
+        const fireworksContainer = document.getElementById('fireworks-container');
+        const fireworks = new Fireworks.default(fireworksContainer, {
+            rocketsPoint: {
+                min: 50,
+                max: 50
+            },
+            hue: {
+                // EDITED: Changed to 360 for all colors
+                min: 0,
+                max: 360
+            },
+            delay: {
+                min: 30,
+                max: 60
+            },
+            speed: 2,
+            acceleration: 1.05,
+            friction: 0.97,
+            gravity: 1.5,
+            particles: 75,
+            flickering: 50,
+            traceSpeed: 3,
+            explosion: 5,
+            intensity: 30,
+            lineWidth: {
+                explosion: {
+                    min: 1,
+                    max: 3
+                },
+                trace: {
+                    min: 1,
+                    max: 2
+                }
+            }
+        });
         
         surpriseButton.addEventListener('click', () => {
-            // 1. Fire the confetti
-            myConfetti({
-                particleCount: 200,
-                spread: 160,
-                origin: { y: 0.6 }
-            });
-            // 2. Then show the main menu
+            // 1. Show the main menu
             showMainMenu();
+
+            // 2. Start the fireworks
+            fireworks.start();
+
+            // 3. EDITED: Stop them after 5 seconds
+            setTimeout(() => {
+                fireworks.stop();
+            }, 5000);
         });
     </script>
 </body>
