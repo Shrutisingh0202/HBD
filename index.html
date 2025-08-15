@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- EDITED: Swapped confetti library for a real fireworks library -->
     <script src="https://cdn.jsdelivr.net/npm/fireworks-js@2.10.7/dist/index.umd.js"></script>
     <style>
         /* --- Main Body and Background Style --- */
@@ -20,7 +19,7 @@
             background-attachment: fixed;
             background-position: center;
             cursor: none; /* Hides the default mouse arrow */
-            overflow-x: hidden;
+            overflow: hidden; /* Prevents scrollbars during animation */
         }
         
         /* --- Custom Glowing Cursor Style --- */
@@ -90,14 +89,17 @@
             display: flex;
             animation: pop-in-out 3s ease-in-out forwards;
         }
+
+        /* The welcome title will be animated, so it starts invisible */
+        #welcome-title {
+            opacity: 0;
+        }
     </style>
 </head>
 <body class="text-gray-800">
 
-    <!-- EDITED: This div is now the container for the new fireworks effect -->
     <div id="fireworks-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000;"></div>
     
-    <!-- The HTML element for our custom cursor -->
     <div id="custom-cursor"></div>
 
     <!-- Password Modal -->
@@ -129,7 +131,8 @@
         <!-- Initial Welcome Screen -->
         <div id="welcome-screen" class="text-center min-h-screen flex flex-col justify-center items-center">
             <div class="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-2xl">
-                <h1 class="font-pacifico text-5xl md:text-8xl text-red-600 drop-shadow-lg">Happy Birthday Baby!</h1>
+                <!-- This is the title that will be animated -->
+                <h1 id="welcome-title" class="font-pacifico text-5xl md:text-8xl text-red-600 drop-shadow-lg">Happy Birthday Baby!</h1>
                 <p class="mt-8 text-lg md:text-2xl text-gray-600">I made a little something for you...</p>
                 <button id="surprise-button" class="mt-8 bg-red-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-red-700 transition-transform transform hover:scale-105">
                     Surprise!
@@ -408,23 +411,13 @@
         submitBtn.addEventListener('click', checkPassword);
         passwordInput.addEventListener('keyup', e => { if (e.key === "Enter") checkPassword(); });
 
-        // --- NEW FIREWORKS SCRIPT ---
+        // --- FIREWORKS SCRIPT ---
         const surpriseButton = document.getElementById('surprise-button');
         const fireworksContainer = document.getElementById('fireworks-container');
         const fireworks = new Fireworks.default(fireworksContainer, {
-            rocketsPoint: {
-                min: 50,
-                max: 50
-            },
-            hue: {
-                // EDITED: Changed to 360 for all colors
-                min: 0,
-                max: 360
-            },
-            delay: {
-                min: 30,
-                max: 60
-            },
+            rocketsPoint: { min: 50, max: 50 },
+            hue: { min: 0, max: 360 },
+            delay: { min: 30, max: 60 },
             speed: 2,
             acceleration: 1.05,
             friction: 0.97,
@@ -434,29 +427,64 @@
             traceSpeed: 3,
             explosion: 5,
             intensity: 30,
-            lineWidth: {
-                explosion: {
-                    min: 1,
-                    max: 3
-                },
-                trace: {
-                    min: 1,
-                    max: 2
-                }
-            }
+            lineWidth: { explosion: { min: 1, max: 3 }, trace: { min: 1, max: 2 } }
         });
         
         surpriseButton.addEventListener('click', () => {
-            // 1. Show the main menu
             showMainMenu();
-
-            // 2. Start the fireworks
             fireworks.start();
-
-            // 3. EDITED: Stop them after 5 seconds
             setTimeout(() => {
                 fireworks.stop();
             }, 5000);
+        });
+
+        // --- EDITED: New Pop-up logic for the title itself ---
+        window.addEventListener('load', () => {
+            const welcomeTitle = document.getElementById('welcome-title');
+
+            // Temporarily make it visible to calculate its final position
+            welcomeTitle.style.opacity = '0';
+            welcomeTitle.style.display = 'block';
+            
+            const rect = welcomeTitle.getBoundingClientRect();
+            const screenCenterX = window.innerWidth / 2;
+            const screenCenterY = window.innerHeight / 2;
+            const elementCenterX = rect.left + rect.width / 2;
+            const elementCenterY = rect.top + rect.height / 2;
+            
+            const translateX = screenCenterX - elementCenterX;
+            const translateY = screenCenterY - elementCenterY;
+
+            // Create the dynamic animation
+            const animationName = 'popAndSettle';
+            const keyframes = `
+                @keyframes ${animationName} {
+                    0% {
+                        transform: translate(${translateX}px, ${translateY}px) scale(1.5); /* Start bigger */
+                        opacity: 0;
+                    }
+                    40% {
+                        transform: translate(${translateX}px, ${translateY}px) scale(1.5); /* Stay big */
+                        opacity: 1;
+                    }
+                    80% {
+                        transform: translate(${translateX}px, ${translateY}px) scale(1.5); /* Hold the big pop-up */
+                        opacity: 1;
+                    }
+                    100% {
+                        transform: translate(0, 0) scale(1); /* Animate back to original spot and size */
+                        opacity: 1;
+                    }
+                }
+            `;
+
+            const styleSheet = document.createElement("style");
+            styleSheet.innerText = keyframes;
+            document.head.appendChild(styleSheet);
+
+            // Apply the animation
+            welcomeTitle.style.animation = `${animationName} 3s ease-in-out forwards`;
+            welcomeTitle.style.opacity = '1';
         });
     </script>
 </body>
